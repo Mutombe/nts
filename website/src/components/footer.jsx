@@ -124,7 +124,7 @@ const Footer = () => {
             </p>
             <a
               href="mailto:nts@ntsgroup.co.zw"
-              className="inline-block bg-yellow-400 text-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition-all hover:scale-105"
+              className="inline-block bg-yellow-400 text-blue-900 px-6 py-3 rounded-sm font-semibold hover:bg-yellow-500 transition-all hover:scale-105"
             >
               Mail Us Now
             </a>

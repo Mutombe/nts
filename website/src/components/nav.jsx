@@ -9,6 +9,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { GiCarWheel } from "react-icons/gi";
 import SearchModal from './search';
 import { LifeBuoy } from 'lucide-react';
+import { CiMenuFries } from "react-icons/ci";
+
 
 
 const Navbar = () => {
@@ -124,7 +126,7 @@ const Navbar = () => {
                     {link.dropdown ? (
                       <div className="relative">
                         <button
-                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+                          className={`px-3 py-2 rounded-sm text-sm font-medium transition-colors flex items-center gap-2 ${
                             location.pathname === link.path || link.dropdown.some(item => item.path === location.pathname)
                               ? 'bg-yellow-400 text-blue-900'
                               : 'text-gray-700 hover:bg-yellow-100 hover:text-blue-900'
@@ -135,7 +137,7 @@ const Navbar = () => {
                           <ChevronDown className="w-4 h-4" />
                         </button>
                         {/* Dropdown Menu */}
-                        <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-xl border-2 border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-sm shadow-xl border-2 border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                           <div className="py-2">
                             {link.dropdown.map((item) => {
                               const DropdownIcon = item.icon;
@@ -160,7 +162,7 @@ const Navbar = () => {
                     ) : (
                       <Link
                         to={link.path}
-                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+                        className={`px-3 py-2 rounded-sm text-sm font-medium transition-colors flex items-center gap-2 ${
                           location.pathname === link.path
                             ? 'bg-yellow-400 text-blue-900'
                             : 'text-gray-700 hover:bg-yellow-100 hover:text-blue-900'
@@ -199,12 +201,12 @@ const Navbar = () => {
 
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-sm hover:bg-gray-100 transition-colors"
               >
                 {isOpen ? (
                   <X className="w-6 h-6 text-blue-900" />
                 ) : (
-                  <Menu className="w-6 h-6 text-blue-900" />
+                  <CiMenuFries className="w-6 h-6 text-blue-900" />
                 )}
               </button>
             </div>
