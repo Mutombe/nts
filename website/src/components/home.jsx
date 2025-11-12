@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   Shield,
   Users,
@@ -12,6 +12,8 @@ import {
   CheckCircle,
   ArrowRight,
   Star,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { SiFsecure } from "react-icons/si";
 import { MdOutlineEmojiPeople } from "react-icons/md";
@@ -24,7 +26,6 @@ import { HiArrowTrendingUp } from "react-icons/hi2";
 import { LiaAwardSolid } from "react-icons/lia";
 import { BsShop } from "react-icons/bs";
 import { IoLogoWhatsapp } from "react-icons/io";
-
 
 // Custom hook for animated counter
 const useCounter = (end, duration = 2000, start = 0) => {
@@ -103,13 +104,48 @@ const AnimatedCounter = ({ value, label, index }) => {
 };
 
 const Home = () => {
+  // Hero background carousel
+  const heroImages = [
+    "/3.png",
+    "/nts1.jpg",
+    "/nts2.png",
+    "/nts3.jpg",
+    "/nts4.jpg",
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Auto-advance carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
+  // Manual navigation functions
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const previousImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? heroImages.length - 1 : prevIndex - 1
+    );
+  };
+
   const features = [
     {
       icon: SiFsecure,
       title: "Safety First",
       description:
         "Commitment to the highest safety standards in all our operations",
-      bgImage: "/12.jpg", // Or use different images for each
+      bgImage: "/12.jpg",
     },
     {
       icon: FaSmileWink,
@@ -176,17 +212,56 @@ const Home = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-20 md:py-32 overflow-hidden">
-        {/* Background Image with Blend Effect */}
-        <div
-          className="absolute inset-0 opacity-97"
-          style={{
-            backgroundImage: "url(/3.png)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            mixBlendMode: "soft-light",
-          }}
-        ></div>
+      <section className="relative bg-gradient-to-br from-blue-500 via-blue-400 to-blue-500  text-white py-20 md:py-32 overflow-hidden">
+        {/* Background Image Carousel */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.97 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url(${heroImages[currentImageIndex]})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              mixBlendMode: "soft-light",
+            }}
+          />
+        </AnimatePresence>
+
+        {/* Carousel Navigation Arrows */}
+        <button
+          onClick={previousImage}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white p-3 rounded-full transition-all"
+          aria-label="Previous image"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={nextImage}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white p-3 rounded-full transition-all"
+          aria-label="Next image"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+
+        {/* Carousel Indicators */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {heroImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentImageIndex(index)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                index === currentImageIndex
+                  ? "bg-yellow-400 w-8"
+                  : "bg-white/50 hover:bg-white/75"
+              }`}
+              aria-label={`Go to image ${index + 1}`}
+            />
+          ))}
+        </div>
 
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-blue-800/60 to-blue-900/70"></div>
@@ -276,7 +351,8 @@ const Home = () => {
         </div>
       </section>
 
-                  {/* Floating Action Elements */}
+      {/* Rest of your sections remain the same... */}
+      {/* Floating Action Elements */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
         <button
           className="group bg-gradient-to-r from-blue-700 to-yellow-300 text-white hover:bg-green-300 text-white p-3 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300"
